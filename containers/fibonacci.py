@@ -81,7 +81,7 @@ class FibIter:
         self.f1 = 1
         self.f0 = 1
         self.i = 0
-
+    
     def __next__(self):
         if self.n:
             if self.i >= self.n:
@@ -115,6 +115,7 @@ def fib_yield(n=None):
             f2 = f1 + f0
             f0 = f1
             f1 = f2
+            f1 =f2
             yield f2
     else:
         i = 0
