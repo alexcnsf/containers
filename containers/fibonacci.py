@@ -114,7 +114,11 @@ def fib_yield(n=None):
                 yield 1
             f2 = f1 + f0
             f0 = f1
+<<<<<<< HEAD
             f1 = f2
+=======
+            f1 =f2
+>>>>>>> 933a770 (assignment)
             yield f2
     else:
         i = 0
