@@ -79,7 +79,7 @@ class FibIter:
     def __init__(self, n):
         self.n = n
         self.f1 = 1
-        self.f0 = 0
+        self.f0 = 1
         self.i = 0
 
     def __next__(self):
