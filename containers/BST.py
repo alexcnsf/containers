@@ -58,6 +58,14 @@ class BST(BinaryTree):
         Convert the contents of both trees into a sorted list,
         then compare those sorted lists for equality.
         '''
+        if self is None or t2 is None:
+            return False
+        l1 = self.to_list('inorder')
+        l2 = t2.to_list('inorder')
+        if l1 == l2:
+            return True
+        else:
+            return False
 
     def is_bst_satisfied(self):
         '''
@@ -88,21 +96,21 @@ class BST(BinaryTree):
         are static methods just like this one.
         '''
         if node is None:
-            return True
-        ret = True
+            count = True
+        return = True
         if node.left:
             if node.left.value < node.value and \
                node.value > BST._find_largest(node.left):
-                ret &= BST._is_bst_satisfied(node.left)
+                count &= BST._is_bst_satisfied(node.left)
             else:
-                ret = False
+                count = False
         if node.right:
             if node.right.value > node.value and \
                node.value < BST._find_smallest(node.right):
-                ret &= BST._is_bst_satisfied(node.right)
+                count &= BST._is_bst_satisfied(node.right)
             else:
-                ret = False
-        return ret
+                count = False
+        return count
 
     def insert(self, value):
         '''
