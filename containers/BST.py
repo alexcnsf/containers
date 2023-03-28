@@ -60,9 +60,9 @@ class BST(BinaryTree):
         '''
         if self is None or t2 is None:
             return False
-        l1 = self.to_list('inorder')
-        l2 = t2.to_list('inorder')
-        if l1 == l2:
+        list_1 = self.to_list('inorder')
+        list_2 = t2.to_list('inorder')
+        if list_1 == list_2:
             return True
         else:
             return False
@@ -96,21 +96,21 @@ class BST(BinaryTree):
         are static methods just like this one.
         '''
         if node is None:
-            count = True
-        return = True
+            return True
+        ret = True
         if node.left:
             if node.left.value < node.value and \
                node.value > BST._find_largest(node.left):
-                count &= BST._is_bst_satisfied(node.left)
+                ret &= BST._is_bst_satisfied(node.left)
             else:
-                count = False
+                ret = False
         if node.right:
             if node.right.value > node.value and \
                node.value < BST._find_smallest(node.right):
-                count &= BST._is_bst_satisfied(node.right)
+                ret &= BST._is_bst_satisfied(node.right)
             else:
-                count = False
-        return count
+                ret = False
+        return ret
 
     def insert(self, value):
         '''
