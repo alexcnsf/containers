@@ -129,7 +129,7 @@ class Heap(BinaryTree):
             if node.value > node.right.value:
                 node.value, node.right.value = node.right.value, node.value
 
-def insert_list(self, xs):
+    def insert_list(self, xs):
         '''
         Given a list xs, insert each element of xs into self.
 
