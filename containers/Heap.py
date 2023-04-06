@@ -24,6 +24,10 @@ class Heap():
         If xs is a list (i.e. xs is not None),
         then each element of xs needs to be inserted into the Heap.
         '''
+        super().__init__()
+        self.num_nodes = 0
+        if xs:
+            self.insert_list(xs)
 
     def __repr__(self):
         '''
@@ -59,6 +63,14 @@ class Heap():
         FIXME:
         Implement this method.
         '''
+        ret = True
+        if node.left:
+            ret &= node.value <= node.left.value
+            ret &= Heap._is_heap_satisfied(node.left)
+        if node.right:
+            ret &= node.value <= node.right.value
+            ret &= Heap._is_heap_satisfied(node.right)
+        return ret
 
     def insert(self, value):
         '''
@@ -79,6 +91,30 @@ class Heap():
         Create a @staticmethod helper function,
         following the same pattern used in the BST and AVLTree insert functions.
         '''
+        self.num_nodes += 1
+        binary_str = bin(self.num_nodes)[3:]
+
+        if self.root is None:
+            self.root = Node(value)
+        else:
+            Heap._insert(self.root, value, binary_str)
+
+    @staticmethod
+    def _insert(node, value, binary_str):
+        if binary_str[0] == '0':
+            if len(binary_str) == 1:
+                node.left = Node(value)
+            else:
+                Heap._insert(node.left, value, binary_str[1:])
+            if node.value > node.left.value:
+                node.value, node.left.value = node.left. value, node.value
+        if binary_str[0] == '1':
+            if len(binary_str) == 1:
+                node.right = Node(value)
+            else:
+                Heap._insert(node.right, value, binary_str[1:])
+            if node.value > node.right.value:
+                node.value, node.right.value = node.right.value, node.value
 
     def insert_list(self, xs):
         '''
@@ -87,6 +123,8 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+        for x in xs:
+            self.insert(x)
 
     def find_smallest(self):
         '''
@@ -95,6 +133,17 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+        if self.root is None:
+            return None
+        else:
+            return Heap._find_smallest(self.root)
+
+    @staticmethod
+    def _find_smallest(node):
+        '''
+        '''
+        assert node is not None
+        return node.value
 
     def remove_min(self):
         '''
@@ -115,3 +164,42 @@ class Heap():
         It's possible to do it with only a single helper (or no helper at all),
         but I personally found dividing up the code into two made the most sense.
         '''
+        def remove_min(self):
+        if self.root is None:
+            return None
+        if self.num_nodes == 1:
+            self.root = None
+            self.num_nodes = 0
+            return None
+        binary_str = bin(self.num_nodes)[3:]
+        node_to_remove = Heap._remove_bottom_right(self.root, binary_str)
+        self.root.value = node_to_remove.value
+        self.num_nodes -= 1
+        Heap._trickle(self.root)
+
+    @staticmethod
+    def _remove_bottom_right(node, binary_str):
+        if len(binary_str) == 1:
+            if binary_str == "0":
+                node_to_remove = node.left
+                node.left = None
+            else:
+                node_to_remove = node.right
+                node.right = None
+        elif binary_str[0] == "0":
+            node_to_remove = Heap._remove_bottom_right(node.left, binary_str[1:])
+        else:
+            node_to_remove = Heap._remove_bottom_right(node.right, binary_str[1:])
+        return node_to_remove
+
+    @staticmethod
+    def _trickle(node):
+        if node.left is None:
+            return None
+        if node.right is None or node.left.value < node.right.value:
+            child_node = node.left
+        else:
+            child_node = node.right
+        if child_node.value < node.value:
+            node.value, child_node.value = child_node.value, node.value
+            Heap._trickle(child_node)

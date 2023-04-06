@@ -58,6 +58,14 @@ class BST(BinaryTree):
         Convert the contents of both trees into a sorted list,
         then compare those sorted lists for equality.
         '''
+        if self is None or t2 is None:
+            return False
+        list_1 = self.to_list('inorder')
+        list_2 = t2
+        if list_1 == list_2:
+            return True
+        else:
+            return False
 
     def is_bst_satisfied(self):
         '''
@@ -115,10 +123,10 @@ class BST(BinaryTree):
         Create a staticmethod helper function following the
         pattern of _is_bst_satisfied.
         '''
-        if self.root:
-            BST._insert(self.root, value)
-        else:
+        if self.root is None:
             self.root = Node(value)
+        else:
+            BST._insert(self.root, value)
 
     @staticmethod
     def _insert(node, value):
@@ -161,14 +169,7 @@ class BST(BinaryTree):
         FIXME:
         Implement this function.
         '''
-        if self.root:
-            ret = BST._find(value, self.root)
-            if ret:
-                return ret
-            else:
-                return False
-        else:
-            return False
+        return BST._find(value, self.root)
 
     @staticmethod
     def _find(value, node):
@@ -256,37 +257,22 @@ class BST(BinaryTree):
     @staticmethod
     def _remove(node, value):
         if node is None:
-            return node
-        if value < node.value:
-            node.left = BST._remove(node.left, value)
-            return node
-        elif value > node.value:
+            return None
+        if value > node.value:
             node.right = BST._remove(node.right, value)
-            return node
-        if node.value == value:
-            if node.left is None and node.right is None:
-                node = None
-                return node
+        elif value < node.value:
+            node.left = BST._remove(node.left, value)
+        else:
             if node.left is None:
-                temp = node.right
-                node = None
-                return temp
+                return node.right
             elif node.right is None:
-                temp = node.left
-                node = None
-                return temp
-            else:
-                succparent = node
-                succ = node.right
-                while succ.left is not None:
-                    succparent = succ
-                    succ = succ.left
-                if succparent != node:
-                    succparent.left = succ.right
-                else:
-                    succparent.right = succ.right
-                node.value = succ.value
-                return node
+                return node.left
+            min_node = node.right
+            while min_node.left is not None:
+                min_node = min_node.left
+            node.value = min_node.value
+            node.right = BST._remove(node.right, min_node.value)
+        return node
 
     def remove_list(self, xs):
         '''
